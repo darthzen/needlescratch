@@ -1,0 +1,28 @@
+#!/usr/bin/env python3
+
+
+# Adapted from tutorial at https://rubikscode.net/2019/12/09/creating-custom-tensorflow-dataset/
+
+import pandas
+import os
+import numpy as np
+import pathlib
+import IPython.display as display
+import matplotlib.pyplot as plt
+from PIL import Image
+
+import tensorflow as tf
+
+
+data_directory = pathlib.Path("./albumcovers")
+CLASSES = np.array([item.name for item in data_directory.glob('*'))
+
+from tf.keras.preprocessing.image import ImageDataGenerator
+
+image_generator = ImageDataGenerator(rescale=1./255)
+
+dataset = image_generator.flow_from_directory(directory=str(data_directory),
+                                                     batch_size=32,
+                                                     shuffle=True,
+                                                     target_size=(300, 500),
+                                                     classes = list(CLASSES))
